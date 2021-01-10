@@ -1,5 +1,5 @@
 {
-  "name": "1-Passport-Example",
+  "name": "easy-serve-2",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -7,9 +7,9 @@
     "test": "npm run lint",
     "start": "node server.js",
     "lint": "semistandard --verbose | snazzy",
-    "lint:fix": "semistandard --fix",
     "format": "prettier-semi --write '**/*.js'",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "fix": "npx semistandard --fix"
   },
   "keywords": [],
   "author": "",
