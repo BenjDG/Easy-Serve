@@ -29,12 +29,12 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     }
   });
-  Hotdog.associate = function (models) {
-    Hotdog.belongsTo(models.Table, {
-      foreignKey: {
-        allowNull: false
-      }
-    });
-  };
+  // Hotdog.associate = function (models) {
+  //   Hotdog.belongsTo(models.Table, {
+  //     foreignKey: {
+  //       allowNull: false
+  //     }
+  //   });
+  // };
   return Hotdog;
 };
