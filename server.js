@@ -1,5 +1,6 @@
 // Requiring necessary npm packages
 require('dotenv').config();
+const chalk = require('chalk');
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
@@ -14,7 +15,7 @@ const PORT = process.env.PORT || 8080;
 const SYNC_OPTIONS = {
   force: process.env.NODE_ENV === 'test' || 'development'
 };
-
+console.log(SYNC_OPTIONS);
 const db = require('./models');
 
 // Creating express app and configuring middleware needed for authentication
@@ -46,14 +47,26 @@ app.use(morgan('dev'));
 
 // Requiring our routes
 app.use(routes);
+// console.log(chalk.green('test'));
+// console.log(process.env.NODE_ENV);
+// console.log(chalk.yellow('test'));
+seedDB();
+function seedDB () {
+  if (SYNC_OPTIONS.force === 'development') {
+    console.log(chalk.yellow('test'));
+  }
+}
 
 // Syncing our database and logging a message to the user upon success
-db.sequelize.sync(SYNC_OPTIONS).then(() => {
-  app.listen(PORT, () => {
-    console.log(
-      '==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.',
-      PORT,
-      PORT
-    );
+db.sequelize
+  .sync(SYNC_OPTIONS)
+  .then(() => console.log(chalk.red('test')))
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(
+        '==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.',
+        PORT,
+        PORT
+      );
+    });
   });
-});
