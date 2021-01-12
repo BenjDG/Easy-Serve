@@ -1,2 +1,2 @@
-DROP DATABASE IF EXISTS easy_serve;
-CREATE DATABASE easy_serve;
+DROP DATABASE IF EXISTS easy_serveDB;
+CREATE DATABASE easy_serveDB;

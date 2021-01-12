@@ -1,20 +1,21 @@
 // Requiring necessary npm packages
 require('dotenv').config();
+const chalk = require('chalk');
 const express = require('express');
 const exphbs = require('express-handlebars');
-// const session = require('express-session');
+const session = require('express-session');
 const helmet = require('helmet');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 // Requiring passport as we've configured it
-// const passport = require('./config/passport');
+const passport = require('./config/passport');
 const routes = require('./routes');
 
 // Setting up port and requiring models for syncing
 const PORT = process.env.PORT || 8080;
 const SYNC_OPTIONS = {
-  force: process.env.NODE_ENV === 'test'
+  force: process.env.NODE_ENV === 'test' || 'development'
 };
-
+console.log(SYNC_OPTIONS);
 const db = require('./models');
 
 // Creating express app and configuring middleware needed for authentication
@@ -33,27 +34,39 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 // We need to use sessions to keep track of our user's login status
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: true,
-//     saveUninitialized: true
-//   })
-// );
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(morgan('tiny'));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(morgan('dev'));
 
 // Requiring our routes
 app.use(routes);
+// console.log(chalk.green('test'));
+// console.log(process.env.NODE_ENV);
+// console.log(chalk.yellow('test'));
+seedDB();
+function seedDB () {
+  if (SYNC_OPTIONS.force === 'development') {
+    console.log(chalk.yellow('test'));
+  }
+}
 
 // Syncing our database and logging a message to the user upon success
-db.sequelize.sync(SYNC_OPTIONS).then(() => {
-  app.listen(PORT, () => {
-    console.log(
-      '==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.',
-      PORT,
-      PORT
-    );
+db.sequelize
+  .sync(SYNC_OPTIONS)
+  .then(() => console.log(chalk.red('test')))
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(
+        '==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.',
+        PORT,
+        PORT
+      );
+    });
   });
-});
